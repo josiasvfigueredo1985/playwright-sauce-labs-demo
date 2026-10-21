@@ -3,10 +3,10 @@ import { TextComponent } from '../../framework/components/text.component';
 
 export class InventoryPage extends BaseWebPage {
   readonly path = '/inventory.html';
-  private headingComponent?: TextComponent;
+  private productsTextComponent?: TextComponent;
 
-  get heading(): TextComponent {
-    return (this.headingComponent ??= new TextComponent(
+  get productsText(): TextComponent {
+    return (this.productsTextComponent ??= new TextComponent(
       this.page,
       'Products',
       { exact: true },
