@@ -1,19 +1,13 @@
 import { expect, test as base } from '@playwright/test';
 import type { Page } from '@playwright/test';
+import type { IUrlActions } from '../../framework/interfaces/i-url-actions';
 import type { IRoutablePage } from '../../framework/interfaces/i-routable-page';
 
-export interface UrlActions {
-  build(path: string): string;
-  goto(target: IRoutablePage): Promise<void>;
-  isAt(target: IRoutablePage): boolean;
-  expect(target: IRoutablePage): Promise<void>;
-}
-
 type Fixtures = {
-  url: UrlActions;
+  url: IUrlActions;
 };
 
-function createUrlActions(page: Page, baseURL: string): UrlActions {
+function createUrlActions(page: Page, baseURL: string): IUrlActions {
   const build = (path: string): string => new URL(path, baseURL).toString();
 
   return {
