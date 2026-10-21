@@ -12,5 +12,5 @@ test('allows a standard user to sign in', async ({ page, url }) => {
   await authentication.signIn(standardUser.username, standardUser.password);
 
   await inventoryPage.expectCurrentPage();
-  await inventoryPage.heading.toBeVisible();
+  await inventoryPage.productsText.toBeVisible();
 });
