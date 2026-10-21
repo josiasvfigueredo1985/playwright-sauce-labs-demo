@@ -1,4 +1,4 @@
-import type { LocatorParent } from "../bases/base-locator.component";
+import type { LocatorParent } from "../types/locator.types";
 import { BaseLocatorComponent } from "../bases/base-locator.component";
 
 export class ButtonComponent extends BaseLocatorComponent {

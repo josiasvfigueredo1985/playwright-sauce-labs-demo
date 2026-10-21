@@ -2,7 +2,7 @@ import { standardUser } from '../../src/business/resources/users';
 import { InventoryPage } from '../../src/business/pages/inventory.page';
 import { LoginPage } from '../../src/business/pages/login.page';
 import { AuthenticationWorkflow } from '../../src/business/workflows/authentication.workflow';
-import { expect, test } from '../../src/business/fixtures/url.fixture';
+import { test } from '../../src/business/fixtures/url.fixture';
 
 test('allows a standard user to sign in', async ({ page, url }) => {
   const loginPage = new LoginPage(page, url);
@@ -12,5 +12,5 @@ test('allows a standard user to sign in', async ({ page, url }) => {
   await authentication.signIn(standardUser.username, standardUser.password);
 
   await inventoryPage.expectCurrentPage();
-  await expect(inventoryPage.heading).toBeVisible();
+  await inventoryPage.heading.toBeVisible();
 });

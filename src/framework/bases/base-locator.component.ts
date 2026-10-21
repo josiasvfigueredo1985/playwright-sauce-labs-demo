@@ -1,8 +1,13 @@
-import type { Locator, Page } from "@playwright/test";
-
-export type LocatorParent = Page | Locator;
-export type RoleOptions = Parameters<Page["getByRole"]>[1];
+import { expect, type Locator } from "@playwright/test";
 
 export class BaseLocatorComponent {
   constructor(readonly locator: Locator) {}
+
+  toBeVisible(): Promise<void> {
+    return expect(this.locator).toBeVisible();
+  }
+
+  toBeHidden(): Promise<void> {
+    return expect(this.locator).toBeHidden();
+  }
 }

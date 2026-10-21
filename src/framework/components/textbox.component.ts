@@ -1,7 +1,7 @@
-import type { Locator, Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
 import { BaseLocatorComponent } from "../bases/base-locator.component";
+import type { LocatorParent } from "../types/locator.types";
 
-type LocatorParent = Page | Locator;
 type PlaceholderOptions = Parameters<Page["getByPlaceholder"]>[1];
 
 export class TextBoxComponent extends BaseLocatorComponent {
