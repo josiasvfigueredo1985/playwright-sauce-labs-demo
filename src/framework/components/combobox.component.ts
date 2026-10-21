@@ -1,4 +1,5 @@
-import { BaseLocatorComponent, type LocatorParent, type RoleOptions } from "../bases/base-locator.component";
+import { BaseLocatorComponent } from "../bases/base-locator.component";
+import type { LocatorParent, RoleOptions } from "../types/locator.types";
 
 export class ComboBoxComponent extends BaseLocatorComponent {
   constructor(parent: LocatorParent, options?: RoleOptions) {

@@ -1,18 +1,15 @@
-import type { Page } from '@playwright/test';
-import type { IUrlActions } from '../../framework/interfaces/i-url-actions';
 import { BaseWebPage } from '../../framework/bases/base-web-page';
+import { TextComponent } from '../../framework/components/text.component';
 
 export class InventoryPage extends BaseWebPage {
   readonly path = '/inventory.html';
+  private headingComponent?: TextComponent;
 
-  constructor(
-    private readonly page: Page,
-    url: IUrlActions,
-  ) {
-    super(url);
-  }
-
-  get heading() {
-    return this.page.getByText('Products', { exact: true });
+  get heading(): TextComponent {
+    return (this.headingComponent ??= new TextComponent(
+      this.page,
+      'Products',
+      { exact: true },
+    ));
   }
 }
