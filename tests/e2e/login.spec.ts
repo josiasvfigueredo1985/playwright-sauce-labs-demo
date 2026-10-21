@@ -5,12 +5,12 @@ import { AuthenticationWorkflow } from '../../src/business/workflows/authenticat
 import { expect, test } from '../../src/business/fixtures/url.fixture';
 
 test('allows a standard user to sign in', async ({ page, url }) => {
-  const loginPage = new LoginPage(page);
-  const authentication = new AuthenticationWorkflow(loginPage, url);
-  const inventoryPage = new InventoryPage(page);
+  const loginPage = new LoginPage(page, url);
+  const authentication = new AuthenticationWorkflow(loginPage);
+  const inventoryPage = new InventoryPage(page, url);
 
   await authentication.signIn(standardUser.username, standardUser.password);
 
-  await url.expect(inventoryPage);
+  await inventoryPage.expectCurrentPage();
   await expect(inventoryPage.heading).toBeVisible();
 });

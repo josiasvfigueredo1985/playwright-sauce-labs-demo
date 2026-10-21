@@ -1,10 +1,16 @@
 import type { Page } from '@playwright/test';
-import type { IRoutablePage } from '../../framework/interfaces/i-routable-page';
+import type { IUrlActions } from '../../framework/interfaces/i-url-actions';
+import { BaseWebPage } from '../../framework/bases/base-web-page';
 
-export class InventoryPage implements IRoutablePage {
+export class InventoryPage extends BaseWebPage {
   readonly path = '/inventory.html';
 
-  constructor(private readonly page: Page) {}
+  constructor(
+    private readonly page: Page,
+    url: IUrlActions,
+  ) {
+    super(url);
+  }
 
   get heading() {
     return this.page.getByText('Products', { exact: true });
