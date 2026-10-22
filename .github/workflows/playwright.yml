@@ -2,14 +2,18 @@ name: Sauce Labs - Sauce Demo Playwright E2E Tests
 
 on:
   push:
+    paths:
+      - "tests/e2e/**"
   pull_request:
+    paths:
+      - "tests/e2e/**"
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  login:
+  e2e:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
@@ -41,3 +45,33 @@ jobs:
             playwright-report/
           retention-days: 7
           if-no-files-found: ignore
+
+  deploy-report:
+    needs: e2e
+    if: ${{ always() && github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Download Playwright report
+        uses: actions/download-artifact@v4
+        with:
+          name: playwright-report
+          path: report-artifact
+
+      - name: Upload report to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: report-artifact/playwright-report
+
+      - name: Deploy report
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Publish report URL
+        run: |
+          echo "Playwright report: ${{ steps.deployment.outputs.page_url }}" >> "$GITHUB_STEP_SUMMARY"

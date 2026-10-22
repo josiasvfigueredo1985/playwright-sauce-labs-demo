@@ -5,9 +5,14 @@
 ```text
 playwright.config.ts           # Playwright runner and browser configuration
 tests/e2e/                     # Scenarios and assertions for business outcomes
+tests/framework/               # Tests for reusable framework behavior
 src/
   framework/                   # Reusable, application-agnostic test infrastructure
-    fixtures/                  # Shared Playwright test entry point and fixtures
+    bases/
+    components/
+    constants/
+    resolvers/
+    types/
   business/                    # Expandable SauceDemo domain implementation
     components/                # UI components, locators, and UI-level actions
     pages/                     # Page objects composed from components
@@ -17,9 +22,9 @@ src/
 
 ## Responsibility boundaries
 
-- **Framework (`src/framework`):** Shared Playwright fixtures, utilities, and
-  resolvers belong here. Keep this layer application-agnostic; it must not know
-  about SauceDemo pages, selectors, or user workflows.
+- **Framework (`src/framework`):** Shared bases, locator components, constants,
+  types, and resolvers belong here. Keep this layer application-agnostic; it
+  must not know about SauceDemo pages, selectors, or user workflows.
 - **Business (`src/business`):** SauceDemo-specific components, pages, user
   workflows, constants, and resources belong here. Components own selectors
   and UI actions; pages compose components; workflows express user goals.
@@ -30,9 +35,12 @@ src/
 
 Run the suite with `npm test`.
 
-GitHub Actions runs the login end-to-end test on pushes and pull requests. The
-workflow installs Chromium and uploads Playwright diagnostics when the test
-fails.
+GitHub Actions runs all tests in `tests/e2e/` when files in that directory
+change, and can also be started manually. Each run uploads the Playwright
+report as an artifact. Push and manual runs also publish the HTML report to
+GitHub Pages and include its URL in the workflow summary. Enable GitHub Pages
+for the repository and set its deployment source to **GitHub Actions**.
+Pull-request runs upload the artifact but do not deploy to Pages.
 
 ## Composing locators
 
