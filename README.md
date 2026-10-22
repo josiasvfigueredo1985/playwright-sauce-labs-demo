@@ -76,6 +76,11 @@ The resolver options support `within`, Playwright's `filter` options, and a
 `TextComponent` combines the native text options with the resolver options,
 including `childLocator`, which filters to text matches containing that locator:
 
+Locator option types and `LocatorPosition` are defined together in
+`src/framework/types/locator.types.ts`. Components use the shared generic
+`LocatorOptions<TQueryOptions>` to combine their Playwright query options with
+the common resolver options.
+
 ```ts
 new TextComponent(page, "Products", {
   exact: true,

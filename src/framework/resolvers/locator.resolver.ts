@@ -1,32 +1,15 @@
 import type { Locator } from "@playwright/test";
-import type { LocatorParent } from "../types/locator.types";
-
-type LocatorResolver = (locator: Locator) => Locator;
-type InitialLocatorResolver = (parent: LocatorParent) => Locator;
-type LocatorFilterOptions = NonNullable<Parameters<Locator["filter"]>[0]>;
-
-export const LocatorPosition = {
-  First: "first",
-  Last: "last",
-  Nth: "nth",
-} as const;
-
-export type LocatorPositionOptions =
-  | { type: typeof LocatorPosition.First }
-  | { type: typeof LocatorPosition.Last }
-  | { type: typeof LocatorPosition.Nth; index: number };
-
-export interface LocatorResolutionOptions {
-  and?: Locator;
-  childLocator?: Locator;
-  filter?: LocatorFilterOptions;
-  position?: LocatorPositionOptions;
-  within?: Locator;
-}
+import { LocatorPosition } from "../constants/locator-position.constants";
+import {
+  type InitialLocatorResolver,
+  type LocatorOptions,
+  type LocatorParent,
+  type LocatorResolver,
+} from "../types/locator.types";
 
 function locatorResolvers(
   locator: Locator,
-  options: LocatorResolutionOptions,
+  options: LocatorOptions,
   resolvers: LocatorResolver[],
 ): Locator {
   let resolvedLocator = locator;
@@ -61,7 +44,7 @@ function locatorResolvers(
 export function resolveLocator(
   parent: LocatorParent,
   initialLocator: InitialLocatorResolver,
-  options: LocatorResolutionOptions = {},
+  options: LocatorOptions = {},
   ...resolvers: LocatorResolver[]
 ): Locator {
   return locatorResolvers(initialLocator(parent), options, resolvers);
