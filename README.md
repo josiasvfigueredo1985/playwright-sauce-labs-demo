@@ -30,6 +30,10 @@ src/
 
 Run the suite with `npm test`.
 
+GitHub Actions runs the login end-to-end test on pushes and pull requests. The
+workflow installs Chromium and uploads Playwright diagnostics when the test
+fails.
+
 ## Composing locators
 
 Use `resolveLocator` with locator callbacks to compose Playwright locators.
