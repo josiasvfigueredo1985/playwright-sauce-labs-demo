@@ -2,7 +2,7 @@ import { LoginFormComponent } from '../components/login-form.component';
 import { BaseWebPage } from '../../framework/bases/base-web-page';
 
 export class LoginPage extends BaseWebPage {
-  readonly path = '/';
+  protected readonly path = '/';
   private formComponent?: LoginFormComponent;
 
   get form(): LoginFormComponent {

@@ -1,6 +1,7 @@
 import type { Page } from "@playwright/test";
 import { BaseLocatorComponent } from "../bases/base-locator.component";
 import type { LocatorParent } from "../types/locator.types";
+import { resolveLocator } from "../resolvers/locator.resolver";
 
 type PlaceholderOptions = Parameters<Page["getByPlaceholder"]>[1];
 
@@ -10,7 +11,11 @@ export class TextBoxComponent extends BaseLocatorComponent {
     placeholder: string | RegExp,
     options?: PlaceholderOptions,
   ) {
-    super(parent.getByPlaceholder(placeholder, options));
+    super(
+      resolveLocator(parent, (root) =>
+        root.getByPlaceholder(placeholder, options),
+      ),
+    );
   }
 
   fill(value: string): Promise<void> {

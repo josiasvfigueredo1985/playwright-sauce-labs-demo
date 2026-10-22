@@ -1,24 +1,33 @@
-import type { Page } from "@playwright/test";
-import type { IUrlActions } from "../interfaces/i-url-actions";
-import type { IRoutablePage } from "../interfaces/i-routable-page";
+import { expect, type Page } from "@playwright/test";
 
-export abstract class BaseWebPage implements IRoutablePage {
-  abstract readonly path: string;
+export abstract class BaseWebPage  {
+  protected abstract readonly path: string;
 
-  constructor(
-    protected readonly page: Page,
-    private readonly url: IUrlActions,
-  ) {}
+  constructor(protected readonly page: Page) {}
 
-  goto(): Promise<void> {
-    return this.url.goto(this);
+  async goto(): Promise<void> {
+    await this.page.goto(this.path);
   }
 
   isCurrentPage(): boolean {
-    return this.url.isAt(this);
+    const currentUrl = new URL(this.page.url());
+    const targetUrl = new URL(this.path, currentUrl);
+
+    return (
+      currentUrl.pathname === targetUrl.pathname &&
+      currentUrl.search === targetUrl.search &&
+      currentUrl.hash === targetUrl.hash
+    );
   }
 
   expectCurrentPage(): Promise<void> {
-    return this.url.expect(this);
+    const targetUrl = new URL(this.path, this.page.url());
+
+    return expect(this.page).toHaveURL(
+      (currentUrl) =>
+        currentUrl.pathname === targetUrl.pathname &&
+        currentUrl.search === targetUrl.search &&
+        currentUrl.hash === targetUrl.hash,
+    );
   }
 }

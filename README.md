@@ -29,3 +29,79 @@ src/
   configure the test runner, TypeScript, and project commands.
 
 Run the suite with `npm test`.
+
+## Composing locators
+
+Use `resolveLocator` with locator callbacks to compose Playwright locators.
+Framework components use the same resolver internally for their root and
+nested locators:
+
+```ts
+const inventoryTable = page.getByRole("table", { name: "Inventory" });
+
+const backpackText = resolveLocator(
+  page,
+  (root) => root.getByText("Backpack", { exact: true }),
+  { within: inventoryTable },
+);
+
+const backpackStockStatus = resolveLocator(
+  inventoryTable,
+  (table) => table.getByRole("row"),
+  { filter: { has: page.getByText("Backpack") } },
+  (row) => row.getByText("In stock", { exact: true }),
+);
+
+const exactProduct = resolveLocator(
+  page,
+  (root) => root.getByText("Product", { exact: true }),
+);
+
+const secondChooseButton = resolveLocator(
+  page,
+  (root) => root.getByRole("button", { name: "Choose" }),
+  { position: { type: LocatorPosition.Nth, index: 1 } },
+);
+
+const productsEditButton = new TextComponent(page, "Products", {
+  exact: true,
+  childLocator: new ButtonComponent(page, "Edit").locator,
+});
+```
+
+The resolver options support `within`, Playwright's `filter` options, and a
+`position` chosen from the `LocatorPosition` constants (`First`, `Last`, or
+`Nth` with an index).
+`exact` remains a native option on the initial Playwright query. For example,
+`TextComponent` combines the native text options with the resolver options,
+including `childLocator`, which filters to text matches containing that locator:
+
+```ts
+new TextComponent(page, "Products", {
+  exact: true,
+  filter: { hasText: "Products" },
+  position: { type: LocatorPosition.First },
+});
+```
+
+`filter({ has })` selects a container based on related text before locating a
+specific descendant. Use `hasText` instead when matching directly on a text
+value.
+
+Playwright's `Locator.within()` accepts a parent locator and returns a scoped
+locator; it is not an async callback block. Keep a scoped locator and use it for
+each interaction:
+
+```ts
+const pricingCard = page
+  .getByTestId("premium-plan-card")
+  .within(page.getByTestId("pricing-cards"));
+
+await pricingCard.getByPlaceholder("Enter promo code").fill("SAVE20");
+await pricingCard.getByRole("button", { name: "Apply" }).click();
+await pricingCard.getByRole("checkbox", { name: "Accept Terms" }).check();
+```
+
+Other supported patterns include chaining a filtered list item to its button,
+finding a labeled form field within a form, and locating a button within a
+text-matched table row. The framework tests cover each case.
