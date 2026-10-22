@@ -1,10 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { ButtonComponent } from "../../src/framework/components/button.component";
 import { TextComponent } from "../../src/framework/components/text.component";
-import {
-  LocatorPosition,
-  resolveLocator,
-} from "../../src/framework/resolvers/locator.resolver";
+import { LocatorPosition } from "../../src/framework/constants/locator-position.constants";
+import { resolveLocator } from "../../src/framework/resolvers/locator.resolver";
 
 test.describe("Locator Resolver", () => {
   test("finds text within a named table", async ({ page }) => {

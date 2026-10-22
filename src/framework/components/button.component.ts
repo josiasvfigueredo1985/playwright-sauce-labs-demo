@@ -1,15 +1,13 @@
 import type { LocatorParent } from "../types/locator.types";
+import type { LocatorOptions } from "../types/locator.types";
 import { BaseLocatorComponent } from "../bases/base-locator.component";
-import {
-  resolveLocator,
-  type LocatorResolutionOptions,
-} from "../resolvers/locator.resolver";
+import { resolveLocator } from "../resolvers/locator.resolver";
 
 export class ButtonComponent extends BaseLocatorComponent {
   constructor(
     parent: LocatorParent,
     name: string | RegExp,
-    options?: LocatorResolutionOptions,
+    options?: LocatorOptions,
   ) {
     super(
       resolveLocator(
