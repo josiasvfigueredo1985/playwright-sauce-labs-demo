@@ -1,13 +1,15 @@
-import type { Locator, Page } from "@playwright/test";
-import { LocatorPosition } from "../constants/locator-position.constants";
+import type {Locator, Page} from '@playwright/test';
+import {LocatorPosition} from '../constants/locator-position.constants';
 
 export type LocatorParent = Page | Locator;
-export type RoleQueryOptions = NonNullable<Parameters<Page["getByRole"]>[1]>;
-export type TextQueryOptions = NonNullable<Parameters<Page["getByText"]>[1]>;
+export type RoleQueryOptions = NonNullable<Parameters<Page['getByRole']>[1]>;
+export type TextQueryOptions = NonNullable<Parameters<Page['getByText']>[1]>;
 export type PlaceholderQueryOptions = NonNullable<
-  Parameters<Page["getByPlaceholder"]>[1]
+  Parameters<Page['getByPlaceholder']>[1]
 >;
-export type LocatorFilterOptions = NonNullable<Parameters<Locator["filter"]>[0]>;
+export type LocatorFilterOptions = NonNullable<
+  Parameters<Locator['filter']>[0]
+>;
 export type LocatorResolver = (locator: Locator) => Locator;
 export type InitialLocatorResolver = (parent: LocatorParent) => Locator;
 

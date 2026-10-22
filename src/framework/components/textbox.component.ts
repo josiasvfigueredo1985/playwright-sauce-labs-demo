@@ -1,26 +1,26 @@
-import { BaseLocatorComponent } from "../bases/base-locator.component";
+import {BaseLocatorComponent} from '../bases/base-locator.component';
 import type {
   LocatorOptions,
   LocatorParent,
   PlaceholderQueryOptions,
-} from "../types/locator.types";
-import { resolveLocator } from "../resolvers/locator.resolver";
+} from '../types/locator.types';
+import {resolveLocator} from '../resolvers/locator.resolver';
 
 export class TextBoxComponent extends BaseLocatorComponent {
   constructor(
-    parent: LocatorParent,
-    placeholder: string | RegExp,
-    options?: LocatorOptions<PlaceholderQueryOptions>,
+      parent: LocatorParent,
+      placeholder: string | RegExp,
+      options?: LocatorOptions<PlaceholderQueryOptions>,
   ) {
-    const { and, childLocator, filter, position, within, ...queryOptions } =
+    const {and, childLocator, filter, position, within, ...queryOptions} =
       options ?? {};
 
     super(
-      resolveLocator(
-        parent,
-        (root) => root.getByPlaceholder(placeholder, queryOptions),
-        { and, childLocator, filter, position, within },
-      ),
+        resolveLocator(
+            parent,
+            (root) => root.getByPlaceholder(placeholder, queryOptions),
+            {and, childLocator, filter, position, within},
+        ),
     );
   }
 

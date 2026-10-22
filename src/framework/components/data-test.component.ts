@@ -1,6 +1,6 @@
-import { BaseLocatorComponent } from "../bases/base-locator.component";
-import type { LocatorParent } from "../types/locator.types";
-import { resolveLocator } from "../resolvers/locator.resolver";
+import {BaseLocatorComponent} from '../bases/base-locator.component';
+import type {LocatorParent} from '../types/locator.types';
+import {resolveLocator} from '../resolvers/locator.resolver';
 
 export class DataTestComponent extends BaseLocatorComponent {
   constructor(parent: LocatorParent, value: string) {
