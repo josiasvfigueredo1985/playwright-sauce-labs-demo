@@ -35,11 +35,13 @@ src/
 
 Run the suite with `npm test`.
 
-GitHub Actions runs all tests in `tests/e2e/` when files in that directory
-change, and can also be started manually. Each run uploads the Playwright
-report as an artifact. Push and manual runs also publish the HTML report to
-GitHub Pages and include its URL in the workflow summary. Enable GitHub Pages
-for the repository and set its deployment source to **GitHub Actions**.
+Husky runs ESLint across the project before each commit. Run `npm run lint`
+and `npm run typecheck` locally. The Playwright workflow runs all tests in
+`tests/e2e/` only when that test directory changes, or when started manually.
+Each e2e run uploads the report as an artifact. Push and manual runs also
+publish the HTML report to GitHub Pages and include its URL in the workflow
+summary. The workflow attempts to enable Pages when needed; if repository
+settings prevent workflow-managed enablement, an administrator must enable it.
 Pull-request runs upload the artifact but do not deploy to Pages.
 
 ## Composing locators
@@ -88,8 +90,9 @@ The resolver options support `within`, Playwright's `filter` options, and a
 `TextComponent` combines the native text options with the resolver options,
 including `childLocator`, which filters to text matches containing that locator:
 
-Locator option types and `LocatorPosition` are defined together in
-`src/framework/types/locator.types.ts`. Components use the shared generic
+Locator option types are defined in `src/framework/types/locator.types.ts`;
+`LocatorPosition` is defined in `src/framework/constants/locator-position.constants.ts`.
+Components use the shared generic
 `LocatorOptions<TQueryOptions>` to combine their Playwright query options with
 the common resolver options.
 

@@ -1,20 +1,20 @@
-import type { LocatorParent } from "../types/locator.types";
-import type { LocatorOptions } from "../types/locator.types";
-import { BaseLocatorComponent } from "../bases/base-locator.component";
-import { resolveLocator } from "../resolvers/locator.resolver";
+import type {LocatorParent} from '../types/locator.types';
+import type {LocatorOptions} from '../types/locator.types';
+import {BaseLocatorComponent} from '../bases/base-locator.component';
+import {resolveLocator} from '../resolvers/locator.resolver';
 
 export class ButtonComponent extends BaseLocatorComponent {
   constructor(
-    parent: LocatorParent,
-    name: string | RegExp,
-    options?: LocatorOptions,
+      parent: LocatorParent,
+      name: string | RegExp,
+      options?: LocatorOptions,
   ) {
     super(
-      resolveLocator(
-        parent,
-        (root) => root.getByRole("button", { name }),
-        options,
-      ),
+        resolveLocator(
+            parent,
+            (root) => root.getByRole('button', {name}),
+            options,
+        ),
     );
   }
 

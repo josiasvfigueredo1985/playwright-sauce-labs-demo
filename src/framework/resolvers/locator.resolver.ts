@@ -1,16 +1,16 @@
-import type { Locator } from "@playwright/test";
-import { LocatorPosition } from "../constants/locator-position.constants";
+import type {Locator} from '@playwright/test';
+import {LocatorPosition} from '../constants/locator-position.constants';
 import {
   type InitialLocatorResolver,
   type LocatorOptions,
   type LocatorParent,
   type LocatorResolver,
-} from "../types/locator.types";
+} from '../types/locator.types';
 
 function locatorResolvers(
-  locator: Locator,
-  options: LocatorOptions,
-  resolvers: LocatorResolver[],
+    locator: Locator,
+    options: LocatorOptions,
+    resolvers: LocatorResolver[],
 ): Locator {
   let resolvedLocator = locator;
 
@@ -21,7 +21,7 @@ function locatorResolvers(
     resolvedLocator = resolvedLocator.filter(options.filter);
   }
   if (options.childLocator) {
-    resolvedLocator = resolvedLocator.filter({ has: options.childLocator });
+    resolvedLocator = resolvedLocator.filter({has: options.childLocator});
   }
   if (options.and) {
     resolvedLocator = resolvedLocator.and(options.and);
@@ -36,16 +36,16 @@ function locatorResolvers(
   }
 
   return resolvers.reduce(
-    (current, resolver) => resolver(current),
-    resolvedLocator,
+      (current, resolver) => resolver(current),
+      resolvedLocator,
   );
 }
 
 export function resolveLocator(
-  parent: LocatorParent,
-  initialLocator: InitialLocatorResolver,
-  options: LocatorOptions = {},
-  ...resolvers: LocatorResolver[]
+    parent: LocatorParent,
+    initialLocator: InitialLocatorResolver,
+    options: LocatorOptions = {},
+    ...resolvers: LocatorResolver[]
 ): Locator {
   return locatorResolvers(initialLocator(parent), options, resolvers);
 }

@@ -1,5 +1,5 @@
-import { LoginFormComponent } from '../components/login-form.component';
-import { BaseWebPage } from '../../framework/bases/base-web-page';
+import {LoginFormComponent} from '../components/login-form.component';
+import {BaseWebPage} from '../../framework/bases/base-web-page';
 
 export class LoginPage extends BaseWebPage {
   protected readonly path = '/';

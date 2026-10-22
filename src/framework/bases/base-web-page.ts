@@ -1,6 +1,6 @@
-import { expect, type Page } from "@playwright/test";
+import {expect, type Page} from '@playwright/test';
 
-export abstract class BaseWebPage  {
+export abstract class BaseWebPage {
   protected abstract readonly path: string;
 
   constructor(protected readonly page: Page) {}
@@ -24,8 +24,8 @@ export abstract class BaseWebPage  {
     const targetUrl = new URL(this.path, this.page.url());
 
     return expect(this.page).toHaveURL(
-      (currentUrl) =>
-        currentUrl.pathname === targetUrl.pathname &&
+        (currentUrl) =>
+          currentUrl.pathname === targetUrl.pathname &&
         currentUrl.search === targetUrl.search &&
         currentUrl.hash === targetUrl.hash,
     );
