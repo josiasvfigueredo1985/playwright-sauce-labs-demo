@@ -17,6 +17,7 @@ export type LocatorPositionOptions =
   | { type: typeof LocatorPosition.Nth; index: number };
 
 export interface LocatorResolutionOptions {
+  and?: Locator;
   childLocator?: Locator;
   filter?: LocatorFilterOptions;
   position?: LocatorPositionOptions;
@@ -38,6 +39,9 @@ function locatorResolvers(
   }
   if (options.childLocator) {
     resolvedLocator = resolvedLocator.filter({ has: options.childLocator });
+  }
+  if (options.and) {
+    resolvedLocator = resolvedLocator.and(options.and);
   }
 
   if (options.position?.type === LocatorPosition.First) {

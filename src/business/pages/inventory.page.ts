@@ -1,15 +1,14 @@
 import { BaseWebPage } from '../../framework/bases/base-web-page';
-import { TextComponent } from '../../framework/components/text.component';
+import { HeaderContainerComponent } from '../components/header-container.component';
+import { DataTestComponent } from '../../framework/components/data-test.component';
 
 export class InventoryPage extends BaseWebPage {
-  readonly path = '/inventory.html';
-  private productsTextComponent?: TextComponent;
+  protected readonly path = '/inventory.html';
+  private headerContainerComponent?: HeaderContainerComponent;
 
-  get productsText(): TextComponent {
-    return (this.productsTextComponent ??= new TextComponent(
-      this.page,
-      'Products',
-      { exact: true },
+  get headerContainer(): HeaderContainerComponent {
+    return (this.headerContainerComponent ??= new HeaderContainerComponent(
+      new DataTestComponent(this.page, 'header-container').locator,
     ));
   }
 }

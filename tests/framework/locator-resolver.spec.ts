@@ -78,8 +78,8 @@ test.describe("Locator Resolver", () => {
     page,
   }) => {
     await page.setContent(`
-    <main data-testid="pricing-cards">
-      <section data-testid="premium-plan-card">
+    <main data-test="pricing-cards">
+      <section data-test="premium-plan-card">
         <input placeholder="Enter promo code">
         <button onclick="this.textContent = 'Applied'">Apply</button>
         <label><input type="checkbox"> Accept Terms</label>
@@ -110,7 +110,7 @@ test.describe("Locator Resolver", () => {
 
   test("locates a labeled field inside the signup form", async ({ page }) => {
     await page.setContent(`
-    <form data-testid="signup-form">
+    <form data-test="signup-form">
       <label for="signup-password">Password</label>
       <input id="signup-password" type="password">
     </form>
