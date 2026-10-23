@@ -1,9 +1,9 @@
 import { ButtonComponent } from '../../framework/components/button.component'
 import { TextBoxComponent } from '../../framework/components/textbox.component'
-import { BaseComponent } from './base-component'
+import { BaseComponent } from './base.component'
 import { LoginFormOptions } from '../resources/login-form-options'
 
-export class LoginFormComponent extends BaseComponent {
+export class SwagLabsLoginFormComponent extends BaseComponent {
   get usernameInput(): TextBoxComponent {
     return new TextBoxComponent(this.root, LoginFormOptions.Username)
   }

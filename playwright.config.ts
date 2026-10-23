@@ -5,7 +5,8 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
-  reporter: 'html',
+  // Blob reports from each shard are merged into one HTML report in CI.
+  reporter: process.env.CI ? [['blob'], ['list']] : 'html',
   use: {
     baseURL: process.env.BASE_URL ?? 'https://www.saucedemo.com',
     testIdAttribute: 'data-test',
