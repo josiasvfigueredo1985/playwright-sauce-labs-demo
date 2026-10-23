@@ -54,6 +54,31 @@ module.exports = [
     },
   },
   {
+    files: ['src/business/components/**/*.ts', 'src/business/pages/**/*.ts'],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector:
+            ':matches(NewExpression, CallExpression) > Literal:matches([regex], [value=/./])',
+          message:
+            'No magic strings: use a constant from src/business/resources (LoginFormOptions, TestIds, ...).',
+        },
+        {
+          // A page's own path is not reused, so it stays on the page.
+          selector: "PropertyDefinition[key.name!='path'] > Literal",
+          message:
+            'No magic strings: use a constant from src/business/resources (LoginFormOptions, TestIds, ...).',
+        },
+        {
+          selector: ':matches(NewExpression, CallExpression) > TemplateLiteral',
+          message:
+            'No magic strings: use a constant from src/business/resources (LoginFormOptions, TestIds, ...).',
+        },
+      ],
+    },
+  },
+  {
     rules: {
       'require-jsdoc': 'off',
       'valid-jsdoc': 'off',

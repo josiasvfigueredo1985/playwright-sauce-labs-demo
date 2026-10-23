@@ -9,23 +9,25 @@ import {
   ProductSortOptions,
 } from '../resources/product-sort-options'
 import { BaseComponent } from './base-component'
+import { TestIds } from '../resources/test-ids'
+import { SecondaryHeaderOptions } from '../resources/secondary-header-options'
 
 export class SwagLabsSecondaryHeaderComponent extends BaseComponent {
   private get container(): DataTestComponent {
-    return new DataTestComponent(this.root, 'secondary-header')
+    return new DataTestComponent(this.root, TestIds.secondaryHeader)
   }
 
   private get productSort(): DataTestComponent {
-    return new DataTestComponent(this.container, 'product-sort-container')
+    return new DataTestComponent(this.container, TestIds.productSortContainer)
   }
 
   get productsTitle(): TitleComponent {
-    return new TitleComponent(this.container, 'Products')
+    return new TitleComponent(this.container, SecondaryHeaderOptions.Products)
   }
 
   activeOption(text: ProductSortOption): TextComponent {
     return new TextComponent(
-      new DataTestComponent(this.container, 'active-option'),
+      new DataTestComponent(this.container, TestIds.activeOption),
       text,
     )
   }
