@@ -8,7 +8,7 @@ import {
   ProductSortOption,
   ProductSortOptions,
 } from '../resources/product-sort-options'
-import { BaseComponent } from './base-component'
+import { BaseComponent } from './base.component'
 import { TestIds } from '../resources/test-ids'
 import { SecondaryHeaderOptions } from '../resources/secondary-header-options'
 

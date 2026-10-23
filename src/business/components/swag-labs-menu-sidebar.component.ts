@@ -1,6 +1,6 @@
 import { ButtonComponent, LinkComponent } from '../../framework/components'
 import { MenuSidebarOptions } from '../resources/menu-sidebar-options'
-import { BaseComponent } from './base-component'
+import { BaseComponent } from './base.component'
 
 export class SwagLabsMenuSidebarComponent extends BaseComponent {
   get closeMenuButton(): ButtonComponent {

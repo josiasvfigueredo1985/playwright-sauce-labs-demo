@@ -1,4 +1,4 @@
-import { BaseComponent } from './base-component'
+import { BaseComponent } from './base.component'
 import { TestIds } from '../resources/test-ids'
 import { MainHeaderOptions } from '../resources/main-header-options'
 import { ButtonComponent } from '../../framework/components/button.component'

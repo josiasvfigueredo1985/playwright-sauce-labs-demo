@@ -13,6 +13,7 @@ built so tests read like human-language specs (a DSL) instead of selector code.
 - [How components get actions and assertions](#how-components-get-actions-and-assertions)
 - [Assertions and actions](#assertions-and-actions)
 - [Business layer](#business-layer)
+- [Naming conventions](#naming-conventions)
 - [Writing tests](#writing-tests)
 - [Code quality](#code-quality)
 - [Tooling and quality gates](#tooling-and-quality-gates)
@@ -357,6 +358,87 @@ export class SwagLabsSecondaryHeaderComponent extends BaseComponent {
 - A form may expose a combined action (for example `signIn`) because it
   combines several components; single selections stay a plain `click()`.
 
+## Naming conventions
+
+Names carry meaning in this framework, so the same rules apply everywhere.
+Follow them for every new file, class, constant and test.
+
+### Files
+
+Kebab-case, with a suffix that states the role:
+
+| Role                         | Pattern                      | Example                                 |
+| ---------------------------- | ---------------------------- | --------------------------------------- |
+| Component (framework or app) | `<name>.component.ts`        | `button.component.ts`                   |
+| Page                         | `<name>.page.ts`             | `inventory.page.ts`                     |
+| Workflow                     | `<name>.workflow.ts`         | `authentication.workflow.ts`            |
+| Util                         | `<name>.utils.ts`            | `locator-action.utils.ts`               |
+| Resolver                     | `<name>.resolver.ts`         | `locator.resolver.ts`                   |
+| Types                        | `<name>.types.ts`            | `locator.types.ts`                      |
+| Constants (framework)        | `<name>.constants.ts`        | `locator-position.constants.ts`         |
+| Resources (business)         | `<component>-options.ts`     | `menu-sidebar-options.ts`, `users.ts`   |
+| Tests                        | `<name>.spec.ts`             | `components.spec.ts`, `login.spec.ts`   |
+
+Base classes follow the same pattern with a `base-` or `base` prefix:
+`base-locator.component.ts`, `base-web.page.ts` and the business
+`base.component.ts`.
+
+### Classes and types
+
+PascalCase, ending in the role:
+
+- Framework components describe the element: `ButtonComponent`,
+  `TextBoxComponent`, `OptionComponent`.
+- Business components are prefixed with the application and describe the area:
+  `SwagLabsMenuSidebarComponent`, `SwagLabsMainHeaderComponent`. The prefix
+  keeps them apart from framework components, and lets the same framework
+  serve another product.
+- Pages, workflows and utils end in `Page`, `Workflow` and `Utils`:
+  `InventoryPage`, `AuthenticationWorkflow`, `LocatorActionUtils`.
+- Locator option types are `LocatorOptions`, `LocatorSource`, `LocatorParent`;
+  a union derived from a constant uses the singular, for example
+  `ProductSortOption` from `ProductSortOptions`.
+
+### Constants and resources
+
+- One flat constant per component, named `<Component>Options` in PascalCase,
+  with PascalCase keys that read as the label: `MenuSidebarOptions.Logout`,
+  `ProductSortOptions.NameAtoZ`. Declare them `as const`.
+- `TestIds` holds `data-test` identifiers in camelCase keys, with kebab-case
+  values that mirror the application.
+- Test data uses a camelCase name that says who or what it is: `standardUser`.
+- Framework constants end in what they are, for example `LocatorPosition`.
+
+### Getters and methods
+
+Name a getter the way the user would say it, so tests read as a spec:
+`menuSidebar.logout.click()`, `secondaryHeader.priceLowToHigh.click()`.
+
+- **No type suffix by default.** The return type (`ButtonComponent`,
+  `LinkComponent`) already says what the element is, and the name survives a
+  change of element type. `about` stays `about` even if it becomes a button.
+- **Add the type only to avoid ambiguity.** `usernameInput` (not `username`,
+  which is also data), `loginButton` (not `login`, which is also a page or
+  workflow), `openMenuButton` and `closeMenuButton` (a bare `openMenu` reads
+  like an action, and components expose none).
+- **Use the application's language,** not the HTML: `nameAtoZ`, not
+  `optionAz`.
+- **Getters are nouns, methods are verbs.** Components return things through
+  getters. Methods are actions or assertions and are named for what they do:
+  `click`, `fill`, `toBeVisible`, `toHaveText`. Parametrized lookups read as a
+  noun phrase, for example `activeOption(text)` and `rowContaining(text)`.
+- **Private helpers stay private.** Internal scoping getters such as
+  `container` or `productSort` are `private` and are never used by tests.
+
+### Tests
+
+- One `test.describe` per component or feature, titled with the thing under
+  test (`ButtonComponent`, `Login`), inside the framework wrapper describe for
+  framework tests.
+- Test titles are full sentences about behavior, for example
+  `allows a standard user to sign in`.
+- Titles and texts may be as descriptive as needed; clarity beats brevity.
+
 ## Writing tests
 
 Tests compose workflows and pages, then assert through components:
@@ -457,11 +539,42 @@ promise rules that fail on any missing `await`.
 Husky runs ESLint and checks formatting before each commit. Run `npm run lint`,
 `npm run format`, and `npm run typecheck` locally. The Playwright workflow runs all tests in
 `tests/e2e/` only when that test directory changes, or when started manually.
-Each e2e run uploads the report as an artifact. Push and manual runs also
+Each e2e run merges the shard reports into one HTML report and uploads it as an
+artifact. Push and manual runs also
 publish the HTML report to GitHub Pages and include its URL in the workflow
 summary. The workflow attempts to enable Pages when needed; if repository
 settings prevent workflow-managed enablement, an administrator must enable it.
 Pull-request runs upload the artifact but do not deploy to Pages.
+
+### Sharding
+
+The e2e suite is split across parallel CI jobs with Playwright's `--shard`
+option, so the run time stays flat as tests are added.
+
+```mermaid
+flowchart LR
+    S1["e2e shard 1/2"] --> M["merge-reports"]
+    S2["e2e shard 2/2"] --> M
+    M --> R["One HTML report"]
+    R --> P["GitHub Pages (push and manual runs)"]
+```
+
+- **Matrix:** `.github/workflows/playwright.yml` runs one `e2e` job per entry in
+  `matrix.shardIndex`, with `shardTotal` set to the number of shards. Jobs use
+  `fail-fast: false`, so one failing shard does not hide the others.
+- **Reports:** on CI, `playwright.config.ts` uses the `blob` reporter. Each
+  shard uploads its blob report, and the `merge-reports` job combines them with
+  `playwright merge-reports` into a single HTML report (traces and screenshots
+  included) that the Pages deploy publishes.
+- **Adding shards:** raise `shardTotal` and list the new indexes in
+  `shardIndex`, for example `shardIndex: [1, 2, 3, 4]` and `shardTotal: [4]`.
+  Keep the number of shards at or below the number of test files that are
+  worth splitting, because tests run in parallel inside each shard too.
+- **Run a shard locally:**
+
+```bash
+npx playwright test tests/e2e/ --shard=1/2
+```
 
 ## Composing locators
 
