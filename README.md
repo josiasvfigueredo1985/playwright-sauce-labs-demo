@@ -343,8 +343,15 @@ export class SwagLabsSecondaryHeaderComponent extends BaseComponent {
 
 - **Pages** (`src/business/pages`) extend `BaseWebPage` and expose components
   as getters, for example `inventoryPage.secondaryHeader`.
-- **Resources** (`src/business/resources`) hold constants and data, such as
-  `ProductSortOptions` (visible labels, not option values) and `standardUser`.
+- **Resources** (`src/business/resources`) hold constants and data, and are the
+  only place for literals. Business components and pages contain none:
+  - `LoginFormOptions`, `MainHeaderOptions`, `SecondaryHeaderOptions`,
+    `MenuSidebarOptions` and `ProductSortOptions`: the visible text of each
+    component, as one flat constant per component (a dictionary the component
+    name gives context to). For multi-language support, these are the
+    objects to replace or make per-locale.
+  - `TestIds`: `data-test` identifiers, which do not change with the language.
+  - `standardUser`: test data.
 - **Workflows** (`src/business/workflows`) express user goals, such as
   `AuthenticationWorkflow.signIn(username, password)`.
 - A form may expose a combined action (for example `signIn`) because it
@@ -390,6 +397,7 @@ before each commit.
 | Area            | Rule                                                                                                          | Enforced by                           |
 | --------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
 | Types           | `strict` TypeScript; the whole project must compile with no errors                                            | `npm run typecheck` (`tsconfig.json`) |
+| Magic strings   | No string or regex literals in business components and pages; use the `resources` dictionaries                | `no-restricted-syntax` (ESLint)       |
 | Formatting      | No semicolons, single quotes, 2-space indent, 80-column width, trailing commas                                | Prettier (`.prettierrc.json`)         |
 | Style           | Google style guide, relaxed for TypeScript (JSDoc not required), max line length 120                          | ESLint (`google`, `prettier` configs) |
 | Dead code       | Unused variables and imports are errors                                                                       | `@typescript-eslint/no-unused-vars`   |
@@ -408,7 +416,8 @@ Architecture rules are part of quality too and are reviewed like any other:
 - Business components contain only getters, with organic names, no caches
   and no thrown errors.
 - Only `LocatorActionUtils` and `LocatorAssertionUtils` call Playwright.
-- Selectors live in one business getter, and test data lives in `resources`.
+- Selectors live in one business getter, and every label, test id and
+  regex lives in `resources` as a constant (no magic strings).
 - Every framework component has framework tests, one `describe` each.
 
 Run all gates locally with:
