@@ -1,16 +1,17 @@
-const {FlatCompat} = require('@eslint/eslintrc');
-const js = require('@eslint/js');
-const tsPlugin = require('@typescript-eslint/eslint-plugin');
-const tsParser = require('@typescript-eslint/parser');
+const { FlatCompat } = require('@eslint/eslintrc')
+const js = require('@eslint/js')
+const tsPlugin = require('@typescript-eslint/eslint-plugin')
+const tsParser = require('@typescript-eslint/parser')
+const playwright = require('eslint-plugin-playwright')
 
 const compat = new FlatCompat({
   baseDirectory: __dirname,
   recommendedConfig: js.configs.recommended,
-});
+})
 
 module.exports = [
-  {ignores: ['node_modules/', 'playwright-report/', 'test-results/']},
-  ...compat.extends('google'),
+  { ignores: ['node_modules/', 'playwright-report/', 'test-results/'] },
+  ...compat.extends('google', 'prettier'),
   {
     files: ['**/*.ts'],
     languageOptions: {
@@ -18,6 +19,8 @@ module.exports = [
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
+        projectService: true,
+        tsconfigRootDir: __dirname,
       },
     },
     plugins: {
@@ -29,6 +32,25 @@ module.exports = [
       'no-unused-vars': 'off',
       'require-jsdoc': 'off',
       '@typescript-eslint/no-unused-vars': 'error',
+      '@typescript-eslint/no-floating-promises': 'error',
+      '@typescript-eslint/await-thenable': 'error',
+      '@typescript-eslint/no-misused-promises': 'error',
+      'max-len': ['error', { code: 120 }],
+    },
+  },
+  {
+    ...playwright.configs['flat/recommended'],
+    files: ['src/**/*.ts', 'tests/**/*.ts'],
+    rules: {
+      ...playwright.configs['flat/recommended'].rules,
+      // Assertions live in our DSL components, not in raw expect calls.
+      'playwright/expect-expect': 'off',
+      'playwright/no-wait-for-timeout': 'error',
+      'playwright/no-networkidle': 'error',
+      'playwright/no-force-option': 'error',
+      'playwright/no-page-pause': 'error',
+      'playwright/no-conditional-in-test': 'error',
+      'playwright/prefer-web-first-assertions': 'error',
     },
   },
   {
@@ -37,4 +59,4 @@ module.exports = [
       'valid-jsdoc': 'off',
     },
   },
-];
+]

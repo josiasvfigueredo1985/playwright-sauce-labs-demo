@@ -1,20 +1,14 @@
-import {
-  BaseWebPage,
-} from '../../framework/bases/base-web-page';
-import {
-  HeaderContainerComponent,
-} from '../components/header-container.component';
-import {
-  DataTestComponent,
-} from '../../framework/components/data-test.component';
+import { BaseWebPage } from '../../framework/bases/base-web-page'
+import { SwagLabsMainHeaderComponent } from '../components/swag-labs-main-header.component'
+import { SwagLabsSecondaryHeaderComponent } from '../components/swag-labs-secondary-header.component'
 
 export class InventoryPage extends BaseWebPage {
-  protected readonly path = '/inventory.html';
-  private headerContainerComponent?: HeaderContainerComponent;
+  protected readonly path = '/inventory.html'
+  get headerContainer(): SwagLabsMainHeaderComponent {
+    return new SwagLabsMainHeaderComponent(this.page)
+  }
 
-  get headerContainer(): HeaderContainerComponent {
-    return (this.headerContainerComponent ??= new HeaderContainerComponent(
-        new DataTestComponent(this.page, 'header-container').locator,
-    ));
+  get secondaryHeader(): SwagLabsSecondaryHeaderComponent {
+    return new SwagLabsSecondaryHeaderComponent(this.page)
   }
 }
