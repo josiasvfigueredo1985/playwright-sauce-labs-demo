@@ -5,4 +5,7 @@ export const TestIds = {
   secondaryHeader: 'secondary-header',
   productSortContainer: 'product-sort-container',
   activeOption: 'active-option',
+  inventoryItem: 'inventory-item',
+  inventoryItemName: 'inventory-item-name',
+  dynamicCatalogSubmenu: 'dynamic-catalog-submenu',
 } as const

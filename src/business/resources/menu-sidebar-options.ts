@@ -5,6 +5,9 @@ export const MenuSidebarOptions = {
   Logout: 'Logout',
   ResetAppState: 'Reset App State',
   CloseMenu: 'Close Menu',
+  LazyLoad: 'Lazy Load',
+  Spinner: 'Spinner',
+  Slider: 'Slider',
 } as const
 
 export type MenuSidebarOption =
