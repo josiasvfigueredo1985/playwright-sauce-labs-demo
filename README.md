@@ -35,8 +35,9 @@ src/
 
 Run the suite with `npm test`.
 
-Husky runs ESLint across the project before each commit. Run `npm run lint`
-and `npm run typecheck` locally. The Playwright workflow runs all tests in
+Prettier formats TypeScript and ESLint configuration files without semicolons.
+Husky runs ESLint and checks formatting before each commit. Run `npm run lint`,
+`npm run format`, and `npm run typecheck` locally. The Playwright workflow runs all tests in
 `tests/e2e/` only when that test directory changes, or when started manually.
 Each e2e run uploads the report as an artifact. Push and manual runs also
 publish the HTML report to GitHub Pages and include its URL in the workflow
@@ -79,9 +80,23 @@ const secondChooseButton = resolveLocator(
 
 const productsEditButton = new TextComponent(page, "Products", {
   exact: true,
-  childLocator: new ButtonComponent(page, "Edit").locator,
+  childLocator: new ButtonComponent(page, "Edit"),
 });
 ```
+
+Components expose their Playwright locator only to the framework. Anywhere a
+locator is accepted (`within`, `and`, `childLocator`, `filter.has`/`hasNot`, or
+a component's parent) you pass another component instead. Assertions and
+actions live on `BaseLocatorComponent` (`toBeVisible`, `toHaveText`,
+`toHaveCount`, `toHaveValue`, `toHaveAttribute`, `toHaveClass`, `click`, ...);
+negate any assertion with `not`:
+
+```ts
+await secondaryHeader.nameAtoZ.click();
+await cart.not.toBeVisible();
+```
+
+Business components only return components and hold no actions or caches.
 
 The resolver options support `within`, Playwright's `filter` options, and a
 `position` chosen from the `LocatorPosition` constants (`First`, `Last`, or
