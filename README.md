@@ -72,6 +72,7 @@ src/
     utils/                     # LocatorActionUtils and LocatorAssertionUtils
   business/                    # Expandable SauceDemo domain implementation
     components/                # Getters that return framework components
+    interfaces/                # Shapes of object-like components (grouped getters)
     pages/                     # Page objects composed from components
     resources/                 # Test data and constants (users, sort options)
     workflows/                 # User goals composed from business page objects
@@ -109,6 +110,7 @@ resolver options.
 | `ComboBoxComponent`            | role `combobox`             | `selectOption`                                 |
 | `OptionComponent`              | role `option`, name         | `click()` selects the option by label          |
 | `DataTestComponent`            | test id (`data-test`)       | -                                              |
+| `StatusComponent`              | role `status`, optional name | -                                             |
 | `ListComponent`                | role `list`                 | `items()`, `itemContaining(text)`              |
 | `TableComponent`               | role `table`                | `rowContaining(text)`, `cellNamed(name)`       |
 | `ListItemComponent`, `RowComponent`, `CellComponent` | role `listitem`, `row`, `cell` | - |
@@ -175,7 +177,7 @@ Only the resolver unwraps a component, through `locatorOf`.
 
 ```mermaid
 flowchart TD
-    T["Test<br/><code>tests/e2e/login.spec.ts</code>"]
+    T["Test<br/><code>tests/e2e/menu-sidebar.spec.ts</code>"]
     W["Workflow / Page<br/>AuthenticationWorkflow, InventoryPage"]
     BC["Business component<br/>SwagLabsSecondaryHeaderComponent<br/><i>getters only, no actions</i>"]
     FC["Framework locator component<br/>OptionComponent, TextBoxComponent, ButtonComponent..."]
@@ -343,11 +345,15 @@ export class SwagLabsSecondaryHeaderComponent extends BaseComponent {
 ```
 
 - **Pages** (`src/business/pages`) extend `BaseWebPage` and expose components
-  as getters, for example `inventoryPage.secondaryHeader`.
+  as getters, for example `inventoryPage.secondaryHeader`. Repeated
+  components are built by `createComponentMap` (`src/framework/factories`): it
+  takes the mold and a constant of names (`ProductNames`) and returns a
+  `Proxy` that creates a product card per key (`titleButton`, `imageButton`,
+  `addToCart`): `inventoryPage.products.sauceLabsBackpack.addToCart.click()`.
 - **Resources** (`src/business/resources`) hold constants and data, and are the
   only place for literals. Business components and pages contain none:
   - `LoginFormOptions`, `MainHeaderOptions`, `SecondaryHeaderOptions`,
-    `MenuSidebarOptions` and `ProductSortOptions`: the visible text of each
+    `MenuSidebarOptions`, `ProductCardOptions` and `ProductSortOptions`: the visible text of each
     component, as one flat constant per component (a dictionary the component
     name gives context to). For multi-language support, these are the
     objects to replace or make per-locale.
@@ -375,9 +381,10 @@ Kebab-case, with a suffix that states the role:
 | Util                         | `<name>.utils.ts`            | `locator-action.utils.ts`               |
 | Resolver                     | `<name>.resolver.ts`         | `locator.resolver.ts`                   |
 | Types                        | `<name>.types.ts`            | `locator.types.ts`                      |
+| Interfaces (business)        | `<name>.interface.ts`        | `dynamic-catalog-menu.interface.ts`     |
 | Constants (framework)        | `<name>.constants.ts`        | `locator-position.constants.ts`         |
 | Resources (business)         | `<component>-options.ts`     | `menu-sidebar-options.ts`, `users.ts`   |
-| Tests                        | `<name>.spec.ts`             | `components.spec.ts`, `login.spec.ts`   |
+| Tests                        | `<feature>.spec.ts`          | `components.spec.ts`, `menu-sidebar.spec.ts` |
 
 Base classes follow the same pattern with a `base-` or `base` prefix:
 `base-locator.component.ts`, `base-web.page.ts` and the business
@@ -436,7 +443,9 @@ Name a getter the way the user would say it, so tests read as a spec:
   test (`ButtonComponent`, `Login`), inside the framework wrapper describe for
   framework tests.
 - Test titles are full sentences about behavior, for example
-  `allows a standard user to sign in`.
+  `allows a standard user to sign in and reach the inventory page`.
+- A spec file is named after the feature it covers, not after the first
+  scenario written in it. Split a file when it starts covering a second feature.
 - Titles and texts may be as descriptive as needed; clarity beats brevity.
 
 ## Writing tests
@@ -444,22 +453,22 @@ Name a getter the way the user would say it, so tests read as a spec:
 Tests compose workflows and pages, then assert through components:
 
 ```ts
-test('allows a standard user to sign in', async ({ page }) => {
-  const loginPage = new LoginPage(page)
-  const authentication = new AuthenticationWorkflow(loginPage)
+test('changes the active sort option when another option is selected', async ({ page }) => {
+  const authentication = new AuthenticationWorkflow(new LoginPage(page))
   const inventoryPage = new InventoryPage(page)
 
   await authentication.signIn(standardUser.username, standardUser.password)
 
-  await inventoryPage.expectCurrentPage()
-  await inventoryPage.headerContainer.logoText.toBeVisible()
   await inventoryPage.secondaryHeader.activeOption(ProductSortOptions.NameAtoZ).toBeVisible()
   await inventoryPage.secondaryHeader.priceLowToHigh.click()
   await inventoryPage.secondaryHeader.activeOption(ProductSortOptions.PriceLowToHigh).toBeVisible()
 })
 ```
 
-- `tests/e2e/` holds business scenarios against the real site.
+- `tests/e2e/` holds business scenarios against the real site, one spec file
+  per feature: `login.spec.ts`, `inventory-sorting.spec.ts`,
+  `menu-sidebar.spec.ts` and `dynamic-catalog-spinner.spec.ts`. Small,
+  focused files also spread evenly across CI shards.
 - `tests/framework/components.spec.ts` verifies the framework with one
   `test.describe` per component, using our components instead of raw
   Playwright.
