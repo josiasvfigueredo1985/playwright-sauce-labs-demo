@@ -9,6 +9,7 @@ export abstract class BaseWebPage {
     await this.page.goto(this.path)
   }
 
+  /** Checks the URL once, right now, without waiting. Use `expectCurrentPage` after navigation. */
   isCurrentPage(): boolean {
     const currentUrl = new URL(this.page.url())
     const targetUrl = new URL(this.path, currentUrl)
@@ -20,6 +21,7 @@ export abstract class BaseWebPage {
     )
   }
 
+  /** Asserts the URL matches the page path, retrying until the assertion timeout. */
   expectCurrentPage(): Promise<void> {
     const targetUrl = new URL(this.path, this.page.url())
 

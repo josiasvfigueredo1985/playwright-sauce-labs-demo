@@ -27,6 +27,10 @@ export class ListComponent extends BaseLocatorComponent {
     )
   }
 
+  /**
+   * Snapshot of the items present now, as components pinned to their position.
+   * If the list changes afterwards, they may point at different items.
+   */
   async items(): Promise<ListItemComponent[]> {
     const count = await resolveLocator(this, (list) =>
       list.getByRole('listitem'),
@@ -41,6 +45,7 @@ export class ListComponent extends BaseLocatorComponent {
     )
   }
 
+  /** Lazy: matches the item containing `text` each time it is used. */
   itemContaining(text: string | RegExp): ListItemComponent {
     return new ListItemComponent(this, { filter: { hasText: text } })
   }
