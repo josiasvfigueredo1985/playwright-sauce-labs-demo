@@ -7,6 +7,7 @@ import {
   ListComponent,
   OptionComponent,
   TableComponent,
+  StatusComponent,
   TextBoxComponent,
   TextComponent,
   TitleComponent,
@@ -59,6 +60,21 @@ test.describe('Framework locator components and resolver options', () => {
 
       await title.toHaveCount(1)
       await title.toHaveText('Products')
+    })
+  })
+
+  test.describe('StatusComponent', () => {
+    test('finds a status region by its accessible name', async ({ page }) => {
+      await page.setContent(`
+    <div role="status" aria-label="Loading" style="width: 20px; height: 20px"></div>
+    <div role="status" aria-label="Saving" style="width: 20px; height: 20px"></div>
+  `)
+
+      const loading = new StatusComponent(page, 'Loading')
+
+      await loading.toHaveCount(1)
+      await loading.toBeVisible()
+      await new StatusComponent(page).toHaveCount(2)
     })
   })
 
