@@ -2,6 +2,10 @@ import type { Locator } from '@playwright/test'
 import { LocatorActionUtils } from '../utils/locator-action.utils'
 import { LocatorAssertionUtils } from '../utils/locator-assertion.utils'
 
+/**
+ * Base for all components. Subclasses build the locator (role, text, test id...);
+ * this class supplies the actions and assertions DSL on top of it.
+ */
 export class BaseLocatorComponent {
   protected readonly actions: LocatorActionUtils
   private readonly assertions: LocatorAssertionUtils
