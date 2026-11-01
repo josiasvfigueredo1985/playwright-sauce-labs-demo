@@ -7,10 +7,10 @@ import {
 import {
   ProductSortOption,
   ProductSortOptions,
-} from '../resources/product-sort-options'
+  SecondaryHeaderOptions,
+} from '../resources/inventory'
 import { BaseComponent } from './base.component'
 import { TestIds } from '../resources/test-ids'
-import { SecondaryHeaderOptions } from '../resources/secondary-header-options'
 
 export class SwagLabsSecondaryHeaderComponent extends BaseComponent {
   private get container(): DataTestComponent {

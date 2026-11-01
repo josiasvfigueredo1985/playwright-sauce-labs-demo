@@ -1,7 +1,7 @@
 import { test } from '@playwright/test'
 import { InventoryPage } from '../../src/business/pages/inventory.page'
 import { LoginPage } from '../../src/business/pages/login.page'
-import { standardUser } from '../../src/business/resources/users'
+import { standardUser } from '../../src/business/resources/authentication'
 import { AuthenticationWorkflow } from '../../src/business/workflows/authentication.workflow'
 
 test.describe('Login', () => {
