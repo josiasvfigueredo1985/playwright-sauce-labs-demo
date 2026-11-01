@@ -1,7 +1,10 @@
 import { BaseWebPage } from '../../framework/bases/base-web.page'
 import { SwagLabsMainHeaderComponent } from '../components/swag-labs-main-header.component'
 import { SwagLabsMenuSidebarComponent } from '../components/swag-labs-menu-sidebar.component'
-import { createComponentMap } from '../../framework/factories/component.factory'
+import { createItemMap } from '../../framework/factories/item.factory'
+import { createCategoryMap } from '../../framework/factories/category.factory'
+import { MenuCategories } from '../resources/menu-categories'
+import { CategoryPage } from './category.page'
 import { ProductNames } from '../resources/product-names'
 import { SwagLabsProductCardComponent } from '../components/swag-labs-product-card.component'
 import { SwagLabsSecondaryHeaderComponent } from '../components/swag-labs-secondary-header.component'
@@ -17,9 +20,16 @@ export class InventoryPage extends BaseWebPage {
   }
 
   get products() {
-    return createComponentMap(
+    return createItemMap(
       ProductNames,
       (name) => new SwagLabsProductCardComponent(this.page, name),
+    )
+  }
+
+  get categories() {
+    return createCategoryMap(
+      MenuCategories,
+      (entry) => new CategoryPage(this.page, entry),
     )
   }
 
