@@ -1,6 +1,6 @@
 import { BaseComponent } from './base.component'
 import { TestIds } from '../resources/test-ids'
-import { MainHeaderOptions } from '../resources/main-header-options'
+import { MainHeaderOptions } from '../resources/navigation'
 import { ButtonComponent } from '../../framework/components/button.component'
 import { TextComponent } from '../../framework/components/text.component'
 import { DataTestComponent } from '../../framework/components/data-test.component'

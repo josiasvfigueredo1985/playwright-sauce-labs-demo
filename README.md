@@ -346,7 +346,7 @@ export class SwagLabsSecondaryHeaderComponent extends BaseComponent {
 
 - **Pages** (`src/business/pages`) extend `BaseWebPage` and expose components
   as getters, for example `inventoryPage.secondaryHeader`. Repeated
-  components are built by `createComponentMap` (`src/framework/factories`): it
+  components are built by `createItemMap` (`src/framework/factories`): it
   takes the mold and a constant of names (`ProductNames`) and returns a
   `Proxy` that creates a product card per key (`titleButton`, `imageButton`,
   `addToCart`): `inventoryPage.products.sauceLabsBackpack.addToCart.click()`.
@@ -383,7 +383,7 @@ Kebab-case, with a suffix that states the role:
 | Types                        | `<name>.types.ts`            | `locator.types.ts`                      |
 | Interfaces (business)        | `<name>.interface.ts`        | `dynamic-catalog-menu.interface.ts`     |
 | Constants (framework)        | `<name>.constants.ts`        | `locator-position.constants.ts`         |
-| Resources (business)         | `<component>-options.ts`     | `menu-sidebar-options.ts`, `users.ts`   |
+| Resources (business)         | `<context>.ts`               | `inventory.ts`, `navigation.ts`, `authentication.ts` |
 | Tests                        | `<feature>.spec.ts`          | `components.spec.ts`, `menu-sidebar.spec.ts` |
 
 Base classes follow the same pattern with a `base-` or `base` prefix:

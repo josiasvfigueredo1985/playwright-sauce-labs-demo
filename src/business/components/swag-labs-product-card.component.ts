@@ -4,7 +4,7 @@ import {
   TextComponent,
 } from '../../framework/components'
 import type { LocatorParent } from '../../framework/types/locator.types'
-import { ProductCardOptions } from '../resources/product-card-options'
+import { ProductCardOptions } from '../resources/inventory'
 import { TestIds } from '../resources/test-ids'
 import { BaseComponent } from './base.component'
 

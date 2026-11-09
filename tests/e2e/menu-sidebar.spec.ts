@@ -1,8 +1,8 @@
 import { test } from '@playwright/test'
 import { InventoryPage } from '../../src/business/pages/inventory.page'
 import { LoginPage } from '../../src/business/pages/login.page'
-import { MenuSidebarOptions } from '../../src/business/resources/menu-sidebar-options'
-import { standardUser } from '../../src/business/resources/users'
+import { MenuSidebarOptions } from '../../src/business/resources/navigation'
+import { standardUser } from '../../src/business/resources/authentication'
 import { AuthenticationWorkflow } from '../../src/business/workflows/authentication.workflow'
 
 test.describe('Menu sidebar', () => {
