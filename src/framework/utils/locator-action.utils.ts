@@ -1,23 +1,36 @@
 import type { Locator } from '@playwright/test'
+import { ApiTracker } from './api-tracker.utils'
+import { UiErrorGuard } from './ui-error-guard.utils'
 
 export type SelectOptionTarget = string | { label: string } | { value: string }
 
 export class LocatorActionUtils {
   constructor(private readonly locator: Locator) {}
 
-  click(): Promise<void> {
+  /** Runs before every action: APIs must have settled and no watched UI error may exist. */
+  private async beforeAction(): Promise<void> {
+    const page = this.locator.page()
+    await ApiTracker.attach(page).waitForIdle()
+    UiErrorGuard.of(page)?.assertNone()
+  }
+
+  async click(): Promise<void> {
+    await this.beforeAction()
     return this.locator.click()
   }
 
-  fill(value: string): Promise<void> {
+  async fill(value: string): Promise<void> {
+    await this.beforeAction()
     return this.locator.fill(value)
   }
 
-  clear(): Promise<void> {
+  async clear(): Promise<void> {
+    await this.beforeAction()
     return this.locator.clear()
   }
 
-  selectOption(option: SelectOptionTarget): Promise<string[]> {
+  async selectOption(option: SelectOptionTarget): Promise<string[]> {
+    await this.beforeAction()
     return this.locator.selectOption(option)
   }
 

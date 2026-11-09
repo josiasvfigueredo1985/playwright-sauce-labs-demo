@@ -4,7 +4,7 @@ import {
   LinkComponent,
 } from '../../framework/components'
 import { DynamicCatalogMenu } from '../interfaces/dynamic-catalog-menu.interface'
-import { MenuSidebarOptions } from '../resources/menu-sidebar-options'
+import { MenuSidebarOptions } from '../resources/navigation'
 import { TestIds } from '../resources/test-ids'
 import { BaseComponent } from './base.component'
 

@@ -2,7 +2,7 @@ import { test } from '@playwright/test'
 import { DynamicCatalogSpinnerPage } from '../../src/business/pages/dynamic-catalog-spinner.page'
 import { InventoryPage } from '../../src/business/pages/inventory.page'
 import { LoginPage } from '../../src/business/pages/login.page'
-import { standardUser } from '../../src/business/resources/users'
+import { standardUser } from '../../src/business/resources/authentication'
 import { AuthenticationWorkflow } from '../../src/business/workflows/authentication.workflow'
 
 test.describe('Dynamic catalog spinner', () => {

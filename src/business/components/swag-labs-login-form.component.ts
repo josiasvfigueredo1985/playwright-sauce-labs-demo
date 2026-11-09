@@ -1,7 +1,7 @@
 import { ButtonComponent } from '../../framework/components/button.component'
 import { TextBoxComponent } from '../../framework/components/textbox.component'
 import { BaseComponent } from './base.component'
-import { LoginFormOptions } from '../resources/login-form-options'
+import { LoginFormOptions } from '../resources/authentication'
 
 export class SwagLabsLoginFormComponent extends BaseComponent {
   get usernameInput(): TextBoxComponent {

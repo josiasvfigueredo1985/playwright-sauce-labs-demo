@@ -1,3 +1,10 @@
+export const MainHeaderOptions = {
+  Logo: 'Swag Labs',
+  OpenMenu: 'Open Menu',
+  CartEmpty: /^Cart, empty$/,
+  CartWithItems: /^Cart, (\d+ items)$/,
+} as const
+
 export const MenuSidebarOptions = {
   AllItems: 'All Items',
   DynamicCatalog: 'Dynamic Catalog',
@@ -12,3 +19,7 @@ export const MenuSidebarOptions = {
 
 export type MenuSidebarOption =
   (typeof MenuSidebarOptions)[keyof typeof MenuSidebarOptions]
+
+export const DynamicCatalogSpinnerOptions = {
+  Loading: 'Loading',
+} as const

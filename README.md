@@ -383,7 +383,7 @@ Kebab-case, with a suffix that states the role:
 | Types                        | `<name>.types.ts`            | `locator.types.ts`                      |
 | Interfaces (business)        | `<name>.interface.ts`        | `dynamic-catalog-menu.interface.ts`     |
 | Constants (framework)        | `<name>.constants.ts`        | `locator-position.constants.ts`         |
-| Resources (business)         | `<component>-options.ts`     | `menu-sidebar-options.ts`, `users.ts`   |
+| Resources (business)         | `<context>.ts`               | `inventory.ts`, `navigation.ts`, `authentication.ts` |
 | Tests                        | `<feature>.spec.ts`          | `components.spec.ts`, `menu-sidebar.spec.ts` |
 
 Base classes follow the same pattern with a `base-` or `base` prefix:

@@ -1,8 +1,8 @@
 import { test } from '@playwright/test'
 import { InventoryPage } from '../../src/business/pages/inventory.page'
 import { LoginPage } from '../../src/business/pages/login.page'
-import { ProductSortOptions } from '../../src/business/resources/product-sort-options'
-import { standardUser } from '../../src/business/resources/users'
+import { ProductSortOptions } from '../../src/business/resources/inventory'
+import { standardUser } from '../../src/business/resources/authentication'
 import { AuthenticationWorkflow } from '../../src/business/workflows/authentication.workflow'
 
 test.describe('Inventory product sorting', () => {
